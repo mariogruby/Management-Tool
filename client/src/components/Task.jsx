@@ -112,7 +112,12 @@ function Task() {
 
     useEffect(() => {
         if (!isAddTaskModalOpen || isRenderChange) {
-            axios.get(`http://localhost:5005/project/${projectId}`)
+            const token = localStorage.getItem('authToken');
+            axios.get(`http://localhost:5005/project/${projectId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then((res) => {
                     setTitle(res.data[0].title)
                     setColumns({

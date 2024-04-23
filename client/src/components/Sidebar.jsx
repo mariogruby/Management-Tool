@@ -1,46 +1,68 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import AddProjectModal from './AddProjectModal'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React, { useCallback, useEffect, useState, useContext } from 'react';
+import { Navigate } from 'react-router-dom'
+import AddProjectModal from './AddProjectModal';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/auth.js';
 
 const Sidebar = () => {
-
-  const [isModalOpen, setModalState] = useState(false)
-  const [projects, setProjects] = useState([])
-  const [paramsWindow, setParamsWindow] = useState(window.location.pathname.slice(1))
-  useEffect(() => {
-  })
+  const { isLoggedIn } = useContext(AuthContext);
+  const [isModalOpen, setModalState] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [paramsWindow, setParamsWindow] = useState(window.location.pathname.slice(1));
+  const [error, setError] = useState(null);
 
   const handleLocation = (e) => {
-    setParamsWindow(new URL(e.currentTarget.href).pathname.slice(1))
-  }
+    setParamsWindow(new URL(e.currentTarget.href).pathname.slice(1));
+  };
 
   const openModal = useCallback(() => {
-    setModalState(true)
-  }, [])
-
-  const closeModal = useCallback(() => {
-    setModalState(false)
-  }, [])
-
-  const projectData = () => {
-    axios.get('http://localhost:5005/projects/')
-      .then((res) => {
-        setProjects(res.data)
-      })
-  }
-
-  useEffect(() => {
-    projectData()
-    document.addEventListener('projectUpdate', ({ detail }) => {
-      projectData()
-    })
-    return () => {
-      document.removeEventListener('projectUpdate', {}, false)
-    }
+    setModalState(true);
   }, []);
 
+  const closeModal = useCallback(() => {
+    setModalState(false);
+  }, []);
 
+  const projectData = () => {
+    const token = localStorage.getItem('authToken');
+    axios.get('http://localhost:5005/projects/', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        console.log('res:', res);
+        setProjects(res.data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log('logged in:', isLoggedIn)
+      projectData();
+      document.addEventListener('projectUpdate', ({ detail }) => {
+        projectData();
+      });
+      return () => {
+        document.removeEventListener('projectUpdate', {}, false);
+      };
+    }
+  }, [isLoggedIn]);
+
+  // if (!isLoggedIn) {
+  //   // Return early if user is not logged in
+  //   return <Navigate to='/login'/>
+  // }
+
+  if (error) {
+    // Handle the error here, display an error message or take appropriate action
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className='py-5'>
@@ -63,7 +85,7 @@ const Sidebar = () => {
       </ul>
       <AddProjectModal isModalOpen={isModalOpen} closeModal={closeModal} />
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

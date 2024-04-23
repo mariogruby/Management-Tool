@@ -1,9 +1,18 @@
+import React, { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from "./context/auth.js";
 import AppLayout from "./components/AppLayout";
-import { Routes, Route } from "react-router-dom";
 import Task from "./components/Task";
+import Signup from './auth/Signup';
+import Login from "./auth/Login";
+import LayoutMessage from "./components/Welcome.jsx";
+import AuthLayout from "./auth/AuthLayout.jsx";
 import { Toaster } from "react-hot-toast";
+
 function App() {
   console.log('render app..')
+  const { isLoggedIn, isLoading } = useContext(AuthContext);
+
   return (
     <AppLayout>
       <Toaster
@@ -11,16 +20,17 @@ function App() {
         gutter={8}
       />
       <Routes>
-        <Route path="/:projectId" element={<Task />} />
-        <Route path="/" element={
-          <div className="flex flex-col items-center w-full pt-10">
-            <img src="./image/welcome.svg" className="w-5/12" alt="" />
-            <h1 className="text-lg text-gray-600">Select or create new project</h1>
-          </div>
-        } />
+        <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
+
+        <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <AuthLayout><Signup /></AuthLayout>} />
+
+        <Route path="/:projectId" element={isLoggedIn ? <Task /> : <Navigate to="/login" />} />
+
+        <Route path="/" element={isLoggedIn ? <LayoutMessage /> : <Navigate to="/login" />} />
       </Routes>
     </AppLayout>
   );
 }
 
 export default App;
+
