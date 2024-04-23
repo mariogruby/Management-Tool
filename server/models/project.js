@@ -6,6 +6,10 @@ const projectSchema = new Schema({
         unique: true,
     },
     description: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
     task: [
         {
             id: Number,
@@ -25,6 +29,6 @@ const projectSchema = new Schema({
 { timestamps: true }
 );
 
-const Project = model('project', projectSchema);
+const Project = model('Project', projectSchema);
 
 export default Project;

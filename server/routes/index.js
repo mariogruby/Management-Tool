@@ -1,34 +1,35 @@
 import express from 'express';
 import joi from 'joi';
 import mongoose from 'mongoose';
-import Project from '../models/index.js';
+import Project from '../models/project.js';
+import { isAuthenticated } from '../middleware/jwt.js';
 
 const router = express.Router()
 
 //* get projects
-router.get('/projects', (req, res, next) => {
-    Project.find({}, { task: 0, __v: 0, updatedAt: 0 })
+router.get('/projects',isAuthenticated, (req, res, next) => {
+    Project.find({user: req.payload._id}, { task: 0, __v: 0, updatedAt: 0 })
         .then(data => res.status(200).send(data))
         .catch(error => next(error));
 });
 
 //* get project by id
-router.get('/project/:id', (req, res, next) => {
+router.get('/project/:id',isAuthenticated, (req, res, next) => {
     if (!req.params.id) return res.status(422).send({ data: { error: true, message: 'Id is required' } });
-    Project.find({ _id: new mongoose.Types.ObjectId(req.params.id) }).sort({ order: 1 })
+    Project.find({ _id: new mongoose.Types.ObjectId(req.params.id), user: req.payload._id  }).sort({ order: 1 })
         .then(data => res.status(200).send(data))
         .catch(error => next(error));
 });
 
 //* add project
-router.post('/project', (req, res, next) => {
+router.post('/project', isAuthenticated, (req, res, next) => {
     const project = joi.object({
         title: joi.string().min(3).max(30).required(),
         description: joi.string().required(),
     })
     const { error, value } = project.validate({ title: req.body.title, description: req.body.description });
     if (error) return res.status(422).send(error)
-    new Project(value).save()
+    new Project({ ...value, user: req.payload._id }).save()
         .then(data => res.status(200).send({ data: { title: data.title, description: data.description, updatedAt: data.updatedAt, _id: data._id } }))
         .catch(error => next(error))
 });
