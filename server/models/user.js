@@ -13,11 +13,6 @@ const userSchema = new Schema(
             type: String,
             required: [true, "Password is required."],
         },
-
-        projects: [{
-            type: Schema.Types.ObjectId,
-            ref: "project"
-        }]
     },
     { timestamps: true }
 )
@@ -25,7 +20,3 @@ const userSchema = new Schema(
 const User = model('User', userSchema)
 
 export default User
-
-
-
-// cart: [{type: Schema.Types.ObjectId, ref: 'Track'}],

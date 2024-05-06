@@ -1,8 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import './db/index.js'; // Asumiendo que 'db' configura la base de datos correctamente
+import './db/index.js'; 
 import configureApp from './config/index.js';
-import api from './routes/index.js';
+import api from './routes/project.js';
 import auth from './routes/auth.js';
 import handleErrors from './error-handling/index.js';
 
