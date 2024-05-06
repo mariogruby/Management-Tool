@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react';
-import { Navigate } from 'react-router-dom'
+// import { Navigate } from 'react-router-dom'
 import AddProjectModal from './AddProjectModal';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import apiService from '../services/api.js'
+// import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth.js';
 
@@ -26,12 +26,7 @@ const Sidebar = () => {
   }, []);
 
   const projectData = () => {
-    const token = localStorage.getItem('authToken');
-    axios.get('http://localhost:5005/projects/', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    apiService.getProjects()
       .then((res) => {
         console.log('res:', res);
         setProjects(res.data);
@@ -60,7 +55,6 @@ const Sidebar = () => {
   // }
 
   if (error) {
-    // Handle the error here, display an error message or take appropriate action
     return <div>Error: {error.message}</div>;
   }
 
@@ -78,7 +72,7 @@ const Sidebar = () => {
         {projects.map((project, index) => (
           <Link key={index} to={project._id} onClick={(e) => handleLocation(e)}>
             <li className={`px-5 py-1.5 mb-1 text-gray-600 font text-sm capitalize select-none hover:text-indigo-600 rounded transition-colors hover:bg-indigo-200/80 ${paramsWindow === project._id && 'text-indigo-600 bg-indigo-200/80'}`}>
-              {project.title}
+              `px-5 py-1.5 mb-1 text-gray-600 font text-sm capitalize select-none hover:text-indigo-600 rounded transition-colors hover:bg-indigo-200/80 ${paramsWindow === project._id && 'text-indigo-600 bg-indigo-200/80'}`
             </li>
           </Link>
         ))}

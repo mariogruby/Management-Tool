@@ -2,10 +2,10 @@ import axios from 'axios';
 
 class AuthService {
     constructor() {
-        this.api = axios.create({
+        this.auth = axios.create({
             baseURL: process.env.REACT_APP_SERVER_URL || "http://localhost:5005",
         });
-        this.api.interceptors.request.use((config) => {
+        this.auth.interceptors.request.use((config) => {
 
             const storedToken = localStorage.getItem("authToken")
 
@@ -17,17 +17,17 @@ class AuthService {
         });
     }
     login = (requestBody) => {
-        return this.api.post("/login", requestBody);
+        return this.auth.post("/login", requestBody);
 
 
     };
 
     signup = (requestBody) => {
-        return this.api.post("/signup", requestBody);
+        return this.auth.post("/signup", requestBody);
     };
 
     verify = () => {
-        return this.api.get("/verify");
+        return this.auth.get("/verify");
     };
 }
 

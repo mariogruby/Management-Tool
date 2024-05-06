@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Popover } from '@headlessui/react'
-import axios from "axios"
+import apiService from '../services/api'
 import toast from 'react-hot-toast';
 import AddProjectModal from './AddProjectModal'
 
@@ -8,8 +8,10 @@ const ProjectDropdown = ({ id, navigate }) => {
     const [isModalOpen, setModalState] = useState(false)
     const handleDelete = async () => {
         try {
-            const data = await axios.delete(`http://localhost:5005/project/${id}`)
-            if (data.data.deletedCount > 0) {
+            const response = await apiService.deleteProject(id); 
+            const data = response.data; 
+    
+            if (data.deletedCount > 0) {
                 toast.success('Record deleted successfully')
                 navigate('/')
                 const customEvent = new CustomEvent('projectUpdate');
@@ -17,12 +19,11 @@ const ProjectDropdown = ({ id, navigate }) => {
             } else {
                 toast.error('Record is already deleted')
             }
-
         } catch (e) {
             toast.error('Something went wrong')
         }
-
     }
+    
 
     const closeModal = () => {
         setModalState(false)

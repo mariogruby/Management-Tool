@@ -19,7 +19,12 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
 
     useEffect(() => {
         if (isOpen) {
-            axios.get(`http://localhost:5005/project/${id.projectId}/task/${id.id}`)
+            const token = localStorage.getItem('authToken');
+            axios.get(`http://localhost:5005/project/${id.projectId}/task/${id.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then((data) => {
                     setTaskData({ ...data.data[0].task[0] });
                     // console.log(taskData);

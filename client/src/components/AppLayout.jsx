@@ -1,14 +1,15 @@
-import React, {useContext} from 'react'
+import React from 'react'
+import Prueba from './prueba'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 
 const AppLayout = ({ children }) => {
     return (
         <div className='bg-white'>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className=' w-screen flex container mx-auto' style={{ height: 'calc(100vh - 56px)' }}>
-                <div className="w-[220px]">
-                    <Sidebar />
+                <div className="">
+                    <Prueba />
                 </div>
                 <div className="flex-1">
                     <div className="flex">

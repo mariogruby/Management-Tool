@@ -1,8 +1,8 @@
 import React, { Fragment, memo, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import BtnPrimary from './BtnPrimary'
+import apiService from '../services/api'
 import BtnSecondary from './BtnSecondary'
-import axios from "axios"
 import toast from 'react-hot-toast'
 
 const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) => {
@@ -12,13 +12,7 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
 
     useEffect(() => {
         if (edit && isModalOpen) {
-            const token = localStorage.getItem('authToken');
-            // console.log('token:', token);
-            axios.get(`http://localhost:5005/project/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            apiService.getProjectById(id)
                 .then((res) => {
                     setTitle(res.data[0].title)
                     setDesc(res.data[0].description)
@@ -29,16 +23,11 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
         }
     }, [isModalOpen]);
 
-
     const handleSubmit = (e) => {
+        const requestBody = { title, description: desc };
         e.preventDefault()
         if (!edit) {
-            const token = localStorage.getItem('authToken');
-            axios.post('http://localhost:5005/project/', { title, description: desc }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            apiService.addProject(requestBody)
                 .then((res) => {
                     closeModal()
                     const customEvent = new CustomEvent('projectUpdate', { detail: { ...res.data } });
@@ -55,7 +44,7 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
                     }
                 })
         } else {
-            axios.put(`http://localhost:5005/project/${id}`, { title, description: desc })
+            apiService.editProject(id, requestBody)
                 .then((res) => {
                     closeModal()
                     const customEvent = new CustomEvent('projectUpdate', { detail: { ...res.data } });

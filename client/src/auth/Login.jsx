@@ -5,6 +5,8 @@ import BtnPrimary from '../components/BtnPrimary.jsx'
 import authService from '../services/auth.js';
 import Loader from '../components/Loading.jsx'
 
+//TODO: arreglar lo del loader en el button
+
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

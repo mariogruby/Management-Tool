@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import BtnPrimary from './BtnPrimary'
+import apiService from '../services/api'
 import BtnSecondary from './BtnSecondary'
-import axios from 'axios'
 import toast from 'react-hot-toast'
 
 const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, taskId = null, edit = false, refreshData }) => {
@@ -12,7 +12,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
 
     useEffect(() => {
         if (edit && isAddTaskModalOpen) {
-            axios.get(`http://localhost:5005/project/${projectId}/task/${taskId}`)
+            apiService.getTask(projectId, taskId)
                 .then((res) => {
                     setTitle(res.data[0].task[0].title)
                     setDesc(res.data[0].task[0].description)
@@ -26,8 +26,10 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        const requestBody = { title, description: desc };
+
         if (!edit) {
-            axios.post(`http://localhost:5005/project/${projectId}/task`, { title, description: desc })
+            apiService.addTask(projectId, requestBody)
                 .then((res) => {
                     setAddTaskModal(false)
                     toast.success('Task created successfully')
@@ -42,7 +44,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                     }
                 })
         } else {
-            axios.put(`http://localhost:5005/project/${projectId}/task/${taskId}`, { title, description: desc })
+            apiService.editTask(projectId, taskId, requestBody)
                 .then((res) => {
                     setAddTaskModal(false)
                     toast.success('Task is updated')
