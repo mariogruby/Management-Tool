@@ -72,7 +72,7 @@ const Sidebar = () => {
         {projects.map((project, index) => (
           <Link key={index} to={project._id} onClick={(e) => handleLocation(e)}>
             <li className={`px-5 py-1.5 mb-1 text-gray-600 font text-sm capitalize select-none hover:text-indigo-600 rounded transition-colors hover:bg-indigo-200/80 ${paramsWindow === project._id && 'text-indigo-600 bg-indigo-200/80'}`}>
-              `px-5 py-1.5 mb-1 text-gray-600 font text-sm capitalize select-none hover:text-indigo-600 rounded transition-colors hover:bg-indigo-200/80 ${paramsWindow === project._id && 'text-indigo-600 bg-indigo-200/80'}`
+            {project.title}
             </li>
           </Link>
         ))}

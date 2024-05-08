@@ -143,7 +143,7 @@ function Task() {
     }
 
     return (
-        <div className='px-4 sm:px-6 md:px-8 lg:px-12 py-6 w-full'>
+        <div className='px-4 sm:px-6 md:px-8 lg:px-12 w-full'>
             <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
                 <h1 className='text-xl text-gray-800 flex justify-start items-center space-x-2.5 mb-4 sm:mb-0'>
                     <span>{title.slice(0, 25)}{title.length > 25 && '...'}</span>

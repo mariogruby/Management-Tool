@@ -11,7 +11,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   console.log('render app..')
-  const { isLoggedIn, isLoading } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <AppLayout>
