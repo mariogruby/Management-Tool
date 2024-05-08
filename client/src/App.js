@@ -4,6 +4,7 @@ import { AuthContext } from "./context/auth.js";
 import AppLayout from "./components/AppLayout";
 import Task from "./components/Task";
 import Signup from './auth/Signup';
+import UpdateUser from './auth/Update.jsx'
 import Login from "./auth/Login";
 import LayoutMessage from "./components/Welcome.jsx";
 import AuthLayout from "./auth/AuthLayout.jsx";
@@ -12,6 +13,7 @@ import { Toaster } from "react-hot-toast";
 function App() {
   console.log('render app..')
   const { isLoggedIn } = useContext(AuthContext);
+  console.log('dfsufdoius', isLoggedIn);
 
   return (
     <AppLayout>
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <AuthLayout><Login /></AuthLayout>} />
 
         <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <AuthLayout><Signup /></AuthLayout>} />
+
+        <Route path="/update" element={isLoggedIn ? <AuthLayout><UpdateUser /></AuthLayout> :  <Navigate to="/login" />} />
 
         <Route path="/:projectId" element={isLoggedIn ? <Task /> : <Navigate to="/login" />} />
 

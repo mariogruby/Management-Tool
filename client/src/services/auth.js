@@ -18,14 +18,13 @@ class AuthService {
     }
     login = (requestBody) => {
         return this.auth.post("/login", requestBody);
-
-
     };
-
     signup = (requestBody) => {
         return this.auth.post("/signup", requestBody);
     };
-
+    updateUser = (requestBody) => {
+        return this.auth.put("/update", requestBody);
+    };
     verify = () => {
         return this.auth.get("/verify");
     };

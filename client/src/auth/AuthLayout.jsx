@@ -1,7 +1,5 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import Login from "./Login";
-import Signup from "./Signup";
 import Loader from "../components/Loading"
 
 const AuthLayout = ({ children }) => {
