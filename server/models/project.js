@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const projectSchema = new Schema({
     title: {
         type: String,
-        unique: true,
+        required: true,
     },
     description: String,
     user: {
