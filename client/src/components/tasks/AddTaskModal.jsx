@@ -77,8 +77,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                     >
                         <div className="fixed inset-0 bg-black/30" />
                     </Transition.Child>
-                    <div className="fixed inset-0 flex items-center justify-center p-4 w-screen h-screen">
-                        {/* <div className="fixed inset-0 "> */}
+                    <div className="fixed inset-0 flex items-center justify-center  w-screen h-screen">
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -88,7 +87,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="rounded-md bg-white w-6/12">
+                            <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title as='div' className={'bg-white shadow px-6 py-4 rounded-t-md sticky top-0'}>
                                     {!edit ? (<h1>Add Task</h1>) : (<h1>Edit Task</h1>)}
                                     <button onClick={() => setAddTaskModal(false)} className='absolute right-6 top-4 text-gray-500 hover:bg-gray-100 rounded focus:outline-none focus:ring focus:ring-offset-1 focus:ring-indigo-200 '>
@@ -97,7 +96,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                                         </svg>
                                     </button>
                                 </Dialog.Title>
-                                <form onSubmit={handleSubmit} className='gap-4 px-8 py-4'>
+                                <form onSubmit={handleSubmit} className='gap-4 px-6 py-4'>
                                     <div className='mb-3'>
                                         <label htmlFor="title" className='block text-gray-600'>Title</label>
                                         <input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} type="text" className='border border-gray-300 rounded-md w-full text-sm py-2 px-2.5 focus:border-indigo-500 focus:outline-offset-1 focus:outline-indigo-400' placeholder='Task title' />
@@ -106,7 +105,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                                         <label htmlFor="description" className='block text-gray-600'>Description</label>
                                         <textarea id="description" name="description" value={desc} onChange={(e) => setDesc(e.target.value)} className='border border-gray-300 rounded-md w-full text-sm py-2 px-2.5 focus:border-indigo-500 focus:outline-offset-1 focus:outline-indigo-400' rows="6" placeholder='Task description'></textarea>
                                     </div>
-                                    <div className='flex justify-end items-center space-x-2'>
+                                    <div className='flex justify-end items-center space-x-4'>
                                         <BtnSecondary onClick={() => setAddTaskModal(false)}>Cancel</BtnSecondary>
                                         <BtnPrimary>Save</BtnPrimary>
                                     </div>

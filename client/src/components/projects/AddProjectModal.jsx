@@ -89,7 +89,7 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="rounded-md bg-white w-6/12">
+                            <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title as='div' className={'bg-white shadow px-6 py-4 rounded-t-md sticky top-0'}>
                                     {edit ? (<h1>Edit Project</h1>) : (<h1>Create Project</h1>)}
                                     <button onClick={() => closeModal()} className=' absolute right-6 top-4 text-gray-500 hover:bg-gray-100 rounded focus:outline-none focus:ring focus:ring-offset-1 focus:ring-indigo-200 '>
