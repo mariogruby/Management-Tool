@@ -160,7 +160,7 @@ function Task() {
                     {Object.entries(columns).map(([columnId, column], index) => {
                         return (
                             <div
-                                className="w-full sm:w-auto h-[580px]"
+                                className="w-full sm:w-auto h-full"
                                 key={columnId}
                             >
                                 <div className="pb-2.5 w-full flex justify-between">
