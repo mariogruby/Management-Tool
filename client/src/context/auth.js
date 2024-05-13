@@ -3,7 +3,7 @@ import authService from '../services/auth.js';
 
 const AuthContext = React.createContext();
 
-function AuthProvider(props)  {
+function AuthProvider(props) {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,7 +22,6 @@ function AuthProvider(props)  {
                 setIsLoggedIn(true);
                 setIsLoading(false);
                 setUser(user);
-                console.log("User authenticated:", user);
             })
             .catch((error) => {
                 setIsLoggedIn(false);
@@ -34,7 +33,6 @@ function AuthProvider(props)  {
             setIsLoggedIn(false);
             setIsLoading(false);
             setUser(null);
-            console.log("No token found. User not authenticated.");
         }
     };
     

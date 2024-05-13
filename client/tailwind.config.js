@@ -6,9 +6,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "theme-gray": '#f1f5f9',
-        "theme-primary": "#6366f1",
-        "theme-primary-dark": "#5661b3",
+        "theme-gray": '#f8fafc',
+        "theme-primary": "#2563eb",
+        "theme-primary-dark": "#1e40af",
+        dark: {
+          DEFAULT: '#333333',
+        },
+        light: {
+          DEFAULT: '#ffffff',
+        }
       }
     },
     fontFamily: {

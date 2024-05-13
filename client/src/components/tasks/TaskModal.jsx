@@ -1,38 +1,30 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-// import Attachment from '../image/attachment.jpg'
-import axios from 'axios'
-import toast from 'react-hot-toast'
-
-
-//first later capital in javascript ?
-
-
-
+import React, { Fragment, useEffect, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import apiService from '../../services/api';
+import toast from 'react-hot-toast';
 
 const TaskModal = ({ isOpen, setIsOpen, id }) => {
-    const [taskData, setTaskData] = useState('')
+    const [taskData, setTaskData] = useState('');
 
     const capitalizeFirstLetter = (string) => {
         return string ? string.charAt(0).toUpperCase() + string.slice(1) : ''
-    }
+    };
 
     useEffect(() => {
         if (isOpen) {
-            const token = localStorage.getItem('authToken');
-            axios.get(`http://localhost:5005/project/${id.projectId}/task/${id.id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            // Here, id.id refers to the unique identifier of the task.
+            // The 'id' object provided as prop has at least two properties: 'projectId' and 'id'.
+            // Accessing the 'id' property of the provided 'id' object.
+            apiService.getTask(id.projectId, id.id)
                 .then((data) => {
+                    // The taskData state is updated with the task data obtained from the response.
                     setTaskData({ ...data.data[0].task[0] });
-                    // console.log(taskData);
                 })
                 .catch((error) => {
-                    toast.error('something went wrong')
-                })
-        }
+                    toast.error('something went wrong');
+                });
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
     return (
@@ -51,7 +43,6 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                         <div className="fixed inset-0 bg-black/30" />
                     </Transition.Child>
                     <div className="fixed inset-0 flex items-center justify-center p-4 w-screen h-screen">
-                        {/* <div className="fixed inset-0 "> */}
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -62,7 +53,6 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="rounded-md bg-white max-w-[85%] w-[85%] h-[85%] overflow-y-hidden">
-
                                 <Dialog.Title as='div' className={'bg-white shadow px-6 py-4 rounded-t-md sticky top-0'}>
                                     <h1>Task details</h1>
                                     <button onClick={() => setIsOpen(false)} className='absolute right-6 top-4 text-gray-500 hover:bg-gray-100 rounded focus:outline-none focus:ring focus:ring-offset-1 focus:ring-gray-500/30 '>
@@ -75,27 +65,17 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                                     <div className="!w-8/12 px-8 space-y-3 py-4 min-h-max  overflow-y-auto">
                                         <h1 className='text-3xl font-semibold '>{capitalizeFirstLetter(taskData.title)}</h1>
                                         <p className='text-gray-600'>{capitalizeFirstLetter(taskData.description)}</p>
-                                        {/* <p className='text-gray-600'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores modi error, voluptatibus ullam odio nemo culpa optio incidunt, soluta sunt eos laboriosam labore animi dolorum voluptas officiis fugit perspiciatis laborum.</p> */}
-                                        {/* <div>
-                                            <h3 className='text-base text-gray-600 font-medium mt-3 mb-2'>Attachment</h3>
-                                            <div className="flex items-center">
-                                                <img className='aspect-video w-56 rounded' src={Attachment} alt="" />
-                                            </div>
-                                        </div> */}
                                     </div>
                                     <div className="w-4/12 py-4 pr-4">
-                                        {/* <div className='border h-full rounded-md'></div> */}
                                     </div>
                                 </div>
-
                             </Dialog.Panel>
                         </Transition.Child>
-
                     </div>
                 </div>
             </Dialog>
         </Transition>
-    )
-}
+    );
+};
 
-export default TaskModal
+export default TaskModal;

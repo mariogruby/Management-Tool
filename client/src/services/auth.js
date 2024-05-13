@@ -6,16 +6,13 @@ class AuthService {
             baseURL: process.env.REACT_APP_SERVER_URL || "http://localhost:5005",
         });
         this.auth.interceptors.request.use((config) => {
-
             const storedToken = localStorage.getItem("authToken")
-
             if (storedToken) {
                 config.headers.Authorization = `Bearer ${storedToken}`;
-                console.log("Token JWT adjuntado a la solicitud:", storedToken);
             }
             return config;
         });
-    }
+    };
     login = (requestBody) => {
         return this.auth.post("/login", requestBody);
     };
@@ -28,7 +25,7 @@ class AuthService {
     verify = () => {
         return this.auth.get("/verify");
     };
-}
+};
 
 const authService = new AuthService();
 

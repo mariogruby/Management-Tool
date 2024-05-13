@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState, useContext, createContext } from 'react';
-import { AlignJustify, X } from "lucide-react"
-import { Tooltip } from 'react-tooltip'
-import apiService from '../services/api.js'
-import AddProjectModal from './AddProjectModal';
+import { AlignJustify, X } from "lucide-react";
+import { Tooltip } from 'react-tooltip';
+import apiService from '../../services/api.js';
+import AddProjectModal from '../projects/AddProjectModal.jsx';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/auth.js';
+import { AuthContext } from '../../context/auth.js';
 
 const SidebarContext = createContext();
 
-export default function Prueba() {
+export default function OffCanvas() {
     const { isLoggedIn } = useContext(AuthContext);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [isModalOpen, setModalState] = useState(false);
@@ -66,7 +66,6 @@ export default function Prueba() {
             )}
             <aside className={`fixed inset-y-0 left-0 z-50 bg-white w-64 overflow-y-auto transition-transform duration-300 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <nav className="h-full flex flex-col bg-white border-r shadow-sm">
-                    {/* Contenido del sidebar */}
                     <div className="p-4 pb-2 flex justify-between items-center">
                         <span className='mr-2 text-xl'>Projects</span>
                         <button onClick={openModal} className='bg-indigo-200 rounded-full p-[2px] focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-offset-1' name="my-anchor-element-">
@@ -79,7 +78,6 @@ export default function Prueba() {
                             content="New Project"
                             place='right'
                         />
-                        {/* Botón para cerrar el sidebar */}
                         <button onClick={toggleSidebar} className="p-1.5 rounded-lg ms-auto hover:bg-indigo-200">
                             <X />
                         </button>
@@ -87,7 +85,6 @@ export default function Prueba() {
 
                     <SidebarContext.Provider value={{ isSidebarOpen }}>
                         <ul className='px-1'>
-                            {/* Lista de elementos del sidebar */}
                             <SidebarList projects={projects} handleLocation={handleLocation} paramsWindow={paramsWindow} />
                         </ul>
                         <AddProjectModal isModalOpen={isModalOpen} closeModal={closeModal} />
@@ -95,7 +92,6 @@ export default function Prueba() {
                 </nav>
             </aside>
 
-            {/* Botón para abrir el sidebar */}
             <button onClick={toggleSidebar} className={` fixed top-2.5 left-4 p-1.5 rounded-lg  hover:bg-indigo-200 ${isSidebarOpen ? 'hidden' : ''} `} name="my-anchor-element-1">
                 <AlignJustify />
                 <Tooltip
@@ -105,7 +101,8 @@ export default function Prueba() {
             </button>
         </>
     );
-}
+};
+
 
 export function SidebarItem({ icon, text, active, alert }) {
     const { isSidebarOpen } = useContext(SidebarContext);
@@ -124,7 +121,8 @@ export function SidebarItem({ icon, text, active, alert }) {
             )}
         </li>
     );
-}
+};
+
 
 function SidebarList({ projects, handleLocation, paramsWindow }) {
     return (
@@ -138,4 +136,4 @@ function SidebarList({ projects, handleLocation, paramsWindow }) {
             ))}
         </>
     );
-}
+};
