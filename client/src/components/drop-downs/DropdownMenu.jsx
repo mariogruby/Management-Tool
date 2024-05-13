@@ -15,14 +15,14 @@ const DropdownMenu = ({ taskId, handleDelete, projectId, setRenderChange }) => {
 
     return (
         <>
-            <Popover className={`relative`}>
+            <Popover className='relative'>
                 <Popover.Button className="py-1 px-2 right-1.5 top-2 hover:bg-slate-200 rounded-sm focus:outline-none focus:ring focus:ring-indigo-200" >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width={4} className="text-[#9ba8bc]" viewBox="0 0 128 512">
                         <path d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z" />
                     </svg>
                 </Popover.Button>
-                <Popover.Panel className="absolute z-10 left-0">
-                    <div className="w-40 bg-white rounded-md border shadow select-none p-1 divide-y">
+                <Popover.Panel className="absolute z-10 right-0">
+                    <div className="w-full bg-white rounded-md border shadow select-none p-1 divide-y">
                         <div className='py-[3px]'>
                             <button onClick={(e) => handleSetEditModal(e)} className='transition-colors duration-75 flex w-full items-center rounded-md px-2.5 py-2 text-sm space-x-2.5 text-slate-500 hover:bg-indigo-500 hover:text-gray-100'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill='currentColor' width={15} viewBox="0 0 512 512">
