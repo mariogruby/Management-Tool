@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Project from '../models/project.js';
 import { isAuthenticated } from '../middleware/jwt.js'; // middleware auth user
 
-const router = express.Router()
+const router = express.Router();
 
 //! GET 
 // * Get all projects belonging to the authenticated user
@@ -92,7 +92,7 @@ router.post('/project/:id/task', isAuthenticated, (req, res, next) => {
         })
         .then(data => res.status(200).send(data))
         .catch(error => next(error));
-})
+});
 
 
 //! GET
@@ -159,7 +159,7 @@ router.delete('/project/:id/task/:taskId', isAuthenticated, (req, res, next) => 
         { $pull: { task: { _id: new mongoose.Types.ObjectId(req.params.taskId) } } })
         .then(data => res.send(data))
         .catch(error => next(error));
-})
+});
 
 //! PUT
 //* Update the stages of multiple tasks within a project
@@ -182,4 +182,4 @@ router.put('/project/:id/todo', isAuthenticated, async (req, res) => {
     res.status(200).send(todo);
 });
 
-export default router
+export default router;

@@ -6,12 +6,14 @@ import User from '../models/user.js';
 import { isAuthenticated } from '../middleware/jwt.js';
 
 dotenv.config();
+
 const router = express.Router();
 const saltRounds = 10;
 
+//! POST
+//* Create account 
 router.post('/signup', (req, res, next) => {
     const { email, password } = req.body;
-    // console.log('body', req.body);
     if (email === "" || password === "") {
         res.status(401).json({ message: 'Provide email and password.' });
         return
@@ -48,6 +50,8 @@ router.post('/signup', (req, res, next) => {
         .catch((err) => next(err));
 });
 
+//! POST
+//* Account log in
 router.post('/login', (req, res, next) => {
     const { email, password } = req.body;
 
@@ -59,17 +63,14 @@ router.post('/login', (req, res, next) => {
     User.findOne({ email })
         .then((foundUser) => {
             if (!foundUser) {
-
                 res.status(401).json({ message: "Account not found." });
                 return;
             }
 
             const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
-
             if (passwordCorrect) {
                 const { _id, email } = foundUser;
                 const payload = { _id, email };
-
                 const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
                     algorithm: "HS256",
                     expiresIn: "6h",
@@ -82,6 +83,8 @@ router.post('/login', (req, res, next) => {
         .catch((err) => next(err));
 });
 
+//! GET
+//* logout account
 router.get("/logout", isAuthenticated, (req, res, next) => {
     req.session.destroy((err) => {
         if (err) {
@@ -92,6 +95,8 @@ router.get("/logout", isAuthenticated, (req, res, next) => {
     });
 });
 
+//! PUT
+//* Edit password Account
 router.put('/update', isAuthenticated, (req, res, next) => {
     const userId = req.payload._id;
     const { newPassword } = req.body;
@@ -125,10 +130,10 @@ router.put('/update', isAuthenticated, (req, res, next) => {
         res.status(200).json({message: "User information updated successfully", user: updateUser });
     })
     .catch(err => next(err));
-})
+});
 
-
-
+//! GET
+//* Verify account authenticated
 router.get("/verify", isAuthenticated, (req, res, next) => {
 
     // If JWT token is valid the payload gets decoded by the
