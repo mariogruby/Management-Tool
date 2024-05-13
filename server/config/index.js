@@ -1,9 +1,12 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import logger from 'morgan';
-import cookieParser from 'cookie-parser'; // Corregido el error de importación
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
-const FRONTEND_URL = "http://localhost:3000";
+dotenv.config();
+
+const FRONTEND_URL = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
 const configureApp = (app) => {
   app.set("trust proxy", 1);
