@@ -6,7 +6,7 @@ import cors from 'cors';
 
 dotenv.config();
 
-const FRONTEND_URL = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const FRONTEND_URL = 'https://todo-app-tool.vercel.app';
 
 const configureApp = (app) => {
   app.set("trust proxy", 1);
