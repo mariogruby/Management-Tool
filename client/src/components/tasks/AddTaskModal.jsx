@@ -3,12 +3,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import BtnPrimary from '../buttons/BtnPrimary';
 import apiService from '../../services/api';
 import BtnSecondary from '../buttons/BtnSecondary';
+import Loader from '../others/Loading';
 import toast from 'react-hot-toast';
 
 const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, taskId = null, edit = false, refreshData }) => {
 
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (edit && isAddTaskModalOpen) {
@@ -25,22 +27,26 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
     }, [isAddTaskModalOpen]);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         const requestBody = { title, description: desc };
+        e.preventDefault();
+        setIsLoading(true);
 
         if (!edit) {
             apiService.addTask(projectId, requestBody)
                 .then((res) => {
                     setAddTaskModal(false);
                     toast.success('Task created successfully');
+                    setIsLoading(false);
                     setTitle('');
                     setDesc('');
                 })
                 .catch((error) => {
                     if (error.response.status === 422) {
                         toast.error(error.response.data.details[0].message);
+                        setIsLoading(false);
                     } else {
                         toast.error('Something went wrong');
+                        setIsLoading(false);
                     };
                 });
         } else {
@@ -48,6 +54,7 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                 .then((res) => {
                     setAddTaskModal(false);
                     toast.success('Task is updated');
+                    setIsLoading(false);
                     refreshData(true);
                     setTitle('');
                     setDesc('');
@@ -55,8 +62,10 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                 .catch((error) => {
                     if (error.response.status === 422) {
                         toast.error(error.response.data.details[0].message);
+                        setIsLoading(false);
                     } else {
                         toast.error('Something went wrong');
+                        setIsLoading(false);
                     };
                 });
         };
@@ -107,7 +116,11 @@ const AddTaskModal = ({ isAddTaskModalOpen, setAddTaskModal, projectId = null, t
                                     </div>
                                     <div className='flex justify-end items-center space-x-4'>
                                         <BtnSecondary onClick={() => setAddTaskModal(false)}>Cancel</BtnSecondary>
-                                        <BtnPrimary>Save</BtnPrimary>
+                                        {isLoading ?
+                                            <BtnPrimary style={{ opacity: 0.7 }} className='' disabled><Loader /></BtnPrimary >
+                                            :
+                                            <BtnPrimary>Save</BtnPrimary>
+                                        }
                                     </div>
                                 </form>
                             </Dialog.Panel>

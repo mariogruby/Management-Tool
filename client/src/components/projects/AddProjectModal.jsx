@@ -3,12 +3,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import BtnPrimary from '../buttons/BtnPrimary';
 import apiService from '../../services/api';
 import BtnSecondary from '../buttons/BtnSecondary';
+import Loader from '../others/Loading';
 import toast from 'react-hot-toast';
 
 const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) => {
 
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (edit && isModalOpen) {
@@ -27,6 +29,8 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
     const handleSubmit = (e) => {
         const requestBody = { title, description: desc };
         e.preventDefault();
+        setIsLoading(true);
+
         if (!edit) {
             apiService.addProject(requestBody)
                 .then((res) => {
@@ -34,14 +38,17 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
                     const customEvent = new CustomEvent('projectUpdate', { detail: { ...res.data } });
                     document.dispatchEvent(customEvent);
                     toast.success('Project created successfully');
+                    setIsLoading(false);
                     setTitle('');
                     setDesc('');
                 })
                 .catch((error) => {
                     if (error.response.status === 422) {
                         toast.error(error.response.data.details[0].message);
+                        setIsLoading(false);
                     } else {
                         toast.error('Something went wrong');
+                        setIsLoading(false);
                     };
                 });
         } else {
@@ -51,14 +58,17 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
                     const customEvent = new CustomEvent('projectUpdate', { detail: { ...res.data } });
                     document.dispatchEvent(customEvent);
                     toast.success('Project updated successfully');
+                    setIsLoading(false);
                     setTitle('');
                     setDesc('');
                 })
                 .catch((error) => {
                     if (error.response.status === 422) {
                         toast.error(error.response.data.details[0].message);
+                        setIsLoading(false);
                     } else {
                         toast.error('Something went wrong');
+                        setIsLoading(false);
                     };
                 });
         };
@@ -109,10 +119,13 @@ const AddProjectModal = ({ isModalOpen, closeModal, edit = false, id = null }) =
                                     </div>
                                     <div className='flex justify-end items-center space-x-2'>
                                         <BtnSecondary onClick={() => closeModal()}>Cancel</BtnSecondary>
-                                        <BtnPrimary>Save</BtnPrimary>
+                                        {isLoading ?
+                                            <BtnPrimary style={{ opacity: 0.7 }} className='' disabled><Loader /></BtnPrimary >
+                                            :
+                                            <BtnPrimary>Save</BtnPrimary>
+                                        }
                                     </div>
                                 </form>
-
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
