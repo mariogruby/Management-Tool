@@ -18,6 +18,7 @@ const LoginPage = () => {
         setEmail(e.target.value);
         if (errorMessage && (errorMessage.includes('found') || errorMessage.includes('Provide'))) {
             setErrorMessage(undefined);
+            setIsLoading(false);
         }
     };
 
@@ -25,6 +26,7 @@ const LoginPage = () => {
         setPassword(e.target.value);
         if (errorMessage && (errorMessage.includes('Unable') || errorMessage.includes('Provide'))) {
             setErrorMessage(undefined);
+            setIsLoading(false);
         }
     };
 
@@ -45,6 +47,7 @@ const LoginPage = () => {
             .catch((error) => {
                 const errorDescription = error.response.data.message;
                 setErrorMessage(errorDescription);
+                setIsLoading(false)
             });
     };
 

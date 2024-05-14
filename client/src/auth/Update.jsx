@@ -28,6 +28,7 @@ const UpdateUser = () => {
         const requestBody = { newPassword };
         if (newPassword !== confirmPassword) {
             toast.error("Passwords do not match.");
+            setIsLoading(false);
             return;
         };
 
@@ -44,6 +45,7 @@ const UpdateUser = () => {
             }, 2000);
         } catch (error) {
             toast.error(error.response.data.message);
+            setIsLoading(false);
         };
     };
 

@@ -17,6 +17,7 @@ const SignupPage = () => {
         setEmail(e.target.value);
         if (errorMessage && errorMessage.includes('address')) {
             setErrorMessage(undefined);
+            setIsLoading(false);
         }
     };
 
@@ -24,6 +25,7 @@ const SignupPage = () => {
         setPassword(e.target.value);
         if (errorMessage && errorMessage.includes('Password')) {
             setErrorMessage(undefined);
+            setIsLoading(false);
         }
     };
 
@@ -43,6 +45,7 @@ const SignupPage = () => {
             .catch((error) => {
                 const errorDescription = error.response.data.message;
                 setErrorMessage(errorDescription);
+                setIsLoading(false);
             });
     };
 
