@@ -29,11 +29,12 @@ const SignupPage = () => {
 
     const handleSignupSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true)
 
         const requestBody = { email, password };
         authService.signup(requestBody)
             .then((response) => {
-                setIsLoading(true);
+                // setIsLoading(true);
                 setTimeout(() => {
                     toast.success('Account created');
                     navigate("/login");

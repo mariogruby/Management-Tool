@@ -24,6 +24,7 @@ const UpdateUser = () => {
 
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
         const requestBody = { newPassword };
         if (newPassword !== confirmPassword) {
             toast.error("Passwords do not match.");
@@ -32,7 +33,7 @@ const UpdateUser = () => {
 
         try {
             const response = await authService.updateUser(requestBody);
-            setIsLoading(true);
+            // setIsLoading(true);
             setNewPassword('');
             setConfirmPassword('');
             setTimeout(() => {

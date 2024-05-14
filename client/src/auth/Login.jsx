@@ -31,10 +31,11 @@ const LoginPage = () => {
     const handleLoginSubmit = (e) => {
         e.preventDefault();
         const requestBody = { email, password };
+        setIsLoading(true)
 
         authService.login(requestBody)
             .then((response) => {
-                setIsLoading(true);
+                // setIsLoading(true);
                 setTimeout(() => {
                     storeToken(response.data.authToken);
                     authenticateUser();
