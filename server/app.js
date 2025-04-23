@@ -11,7 +11,9 @@ dotenv.config();
 const app = express();
 
 configureApp(app);
-
+app.get('/', (req, res) => {
+    res.status(200).send('Server is alive!');
+});
 app.use(api)
 app.use(auth);
 
